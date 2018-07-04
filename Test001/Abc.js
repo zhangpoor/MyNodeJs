@@ -35,7 +35,7 @@ var server = http.createServer(function(req, res) {
         }break;
         case 'demo.html':
         {
-            res.end('<html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><div>我是个html～～ Hi～老司机！！！</div></body></html>');
+            res.end('<html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><div style="border:10px solid black;width: 100%;display: flex">我是个html～～ Hi～老司机！！！</div></body></html>');
         }break;
         default:{
             res.end(result);
