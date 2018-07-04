@@ -12,10 +12,36 @@ var connection = mysql.createConnection({
 });
 
 
+function setRespenseHeader(res,tp){
+    switch(tp){
+        case 'html':{
+           
+            var fs = require('fs');
+            fs.readFile('./demo.html','utf-8',function(err,data){
+                if(err){
+                    res.setHeader('Content-Type', 'text/plain');
+                    res.setHeader('Access-Control-Allow-Origin',"*")
+                    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                    res.end(err.message);
+                }
+                else{
+                    res.writeHead(200,{'Content-Type':'text/html'});
+                    res.end(data);
+                }
+            });   
+        }break;
+
+        default:
+        case 'text':{
+            res.setHeader('Content-Type', 'text/plain');
+            res.setHeader('Access-Control-Allow-Origin',"*")
+            res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+        }break;
+    }
+}
+
 var server = http.createServer(function(req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Access-Control-Allow-Origin',"*")
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+    
 
 
     var currentUrl = req.url;
@@ -26,19 +52,24 @@ var server = http.createServer(function(req, res) {
     switch(currentUrl){
         case '/api/BookList':
         {
+            setRespenseHeader(res,null);
             getBookList(res);
 
         }break;
         case '/api/BookDetailList':
         {
+            setRespenseHeader(res,null);
             getBookDetailList(res);
 
         }break;
         case 'demo.html':
         {
+            setRespenseHeader(res,'html');
+            res.write();
             res.end('<html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><div style="border:10px solid black;width: 100%;display: flex">我是个html～～ Hi～老司机！！！</div></body></html>');
         }break;
         default:{
+            setRespenseHeader(res,null);
             res.end(result);
         }break;
     }
