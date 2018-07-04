@@ -1,0 +1,83 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container" style="border:10px solid black;width: 100%;display: flex">
+        <div class="box1" style="border:1px solid brown;margin: 5px;width: 50%">
+            <div class="btn" onclick="getBookList()" style="border:1px solid red;margin: 8px">获取BookList</div>
+            <div class="text001" style="border:1px solid green;margin: 8px">无数据</div>
+        </div>
+        <div class="box2" style="border:1px solid blue;margin: 5px;width: 50%">
+            <div class="btn" onclick="getBookDetailList()" style="border:1px solid red;margin: 8px">获取BookDetailList</div>
+            <div class="text002" style="border:1px solid green;margin: 8px">无数据</div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function getBookList(){
+
+        $.ajax({
+            url: "http:127.0.0.1:8080/api/BookList",
+            success: function(data){
+
+                var dataList = JSON.parse(data);
+                var r = '';
+                var itText = '';
+                 //alert(data);
+                 var itCount = 0;
+                 dataList.forEach(element => {
+                    itText = element.name;
+                    //'Book_id:' + element.book_id + ',title:'+element.title;
+                    r = r + '<div class="item_'+ element.book_id + '" style="border:1px solid orange;margin: 5px">'+ itText +'</div>'
+
+                });
+                
+                $(".text001").html(r); 
+            }
+        });
+        
+    }
+
+    function getBookDetailList(){
+        $.ajax({
+            url: "http:127.0.0.1:8080/api/BookDetailList",
+            success: function(data){
+
+                var dataList = JSON.parse(data);
+                var r = '';
+                var itText = '';
+                 //alert(data);
+                 var itCount = 0;
+                 dataList.forEach(element => {
+                    itText = element.title;
+                    
+                    //'Book_id:' + element.book_id + ',title:'+element.title; item_001
+                    r = r + '<div class="item_'+ element.book_id + '" onclick="getDetailClick(this)" style="border:1px solid orange;margin: 5px">'+ itText +'</div>'
+
+                });
+                
+                $(".text002").html(r); 
+            }
+        });
+    }
+
+    function getDetailClick(item){
+
+        var bid = item.className;
+        
+
+        alert(item.className);
+    }
+
+</script>
+
+</html>
+
+
+
