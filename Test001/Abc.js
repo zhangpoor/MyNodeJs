@@ -21,7 +21,8 @@ var server = http.createServer(function(req, res) {
     var currentUrl = req.url;
     console.log('Get Request,url:'+ currentUrl);
 
-    var result = '谢谢惠顾～';
+    var result = '谢谢惠顾～'+currentUrl;
+    
     switch(currentUrl){
         case '/api/BookList':
         {
