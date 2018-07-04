@@ -2,12 +2,12 @@ var http = require("http");
 var hostName = '127.0.0.1';
 var port = 8080;
 
-
+//help = MysqlHelper("118.89.154.196", "root", "y,z,t5528", "bmsy")
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-      host     : '159.65.97.244',
+      host     : '118.89.154.196',
       user     : 'root',
-      password : 'f,d,r5080',
+      password : 'y,z,t5528',
       database : 'bmsy'
 });
 
