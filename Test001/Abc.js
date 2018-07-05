@@ -12,27 +12,18 @@ var connection = mysql.createConnection({
 });
 
 
+
 function setRespenseHeader(res,tp){
     switch(tp){
         case 'html':{
-           
-            var fs = require('fs');
-            fs.readFile('./demo.html','utf-8',function(err,data){
-                if(err){
-                    res.setHeader('Content-Type', 'text/plain');
-                    res.setHeader('Access-Control-Allow-Origin',"*")
-                    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                    res.end(err.message);
-                }
-                else{
-                    res.writeHead(200,{'Content-Type':'text/html'});
-                    res.end(data);
-                }
-            });   
+            res.writeHead(200,{'Content-Type':'text/html'});
         }break;
-
-        default:
         case 'text':{
+            res.setHeader('Content-Type', 'text/plain');
+            res.setHeader('Access-Control-Allow-Origin',"*")
+            res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+        }break;
+        default:{
             res.setHeader('Content-Type', 'text/plain');
             res.setHeader('Access-Control-Allow-Origin',"*")
             res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
@@ -40,48 +31,125 @@ function setRespenseHeader(res,tp){
     }
 }
 
+
+
+
+
+
+
 var server = http.createServer(function(req, res) {
     
-
-
     var currentUrl = req.url;
     console.log('Get Request,url:'+ currentUrl);
 
     var result = '谢谢惠顾～'+currentUrl;
-    
     switch(currentUrl){
         case '/api/BookList':
         {
-            setRespenseHeader(res,null);
+            setRespenseHeader(res,'text');
             getBookList(res);
 
         }break;
         case '/api/BookDetailList':
         {
-            setRespenseHeader(res,null);
+            setRespenseHeader(res,'text');
             getBookDetailList(res);
 
         }break;
-        case 'demo.html':
+        case '/h5/demo.html':
         {
-            setRespenseHeader(res,'html');
-            //res.write();
-            //res.end('<html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><div style="border:10px solid black;width: 100%;display: flex">我是个html～～ Hi～老司机！！！</div></body></html>');
+            var fs = require('fs');
+            var fPath = __dirname + '/demo.html';
+            fs.readFile(fPath,'utf-8',function(err,data){
+                if(err){
+
+                    setRespenseHeader(res,'text');
+                    res.end(err.message+' path:'+fPath);
+                }
+                else{
+                    setRespenseHeader(res,'html');
+                    res.end(data);
+                }
+            }); 
         }break;
         default:{
-            setRespenseHeader(res,null);
-            res.end(result);
+            result = result + '_default';
+            setRespenseHeader(res,'html');
+            res.end('<html lang="en"><head><meta charset="UTF-8"><title>Title</title><script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script></head><body><div style="border:10px solid black;width: 100%;display: flex">老司机～</div></body></html>');
         }break;
     }
+    
 });
 
 server.listen(port, hostName, function() {
     console.log('service running at http://' + hostName + ':' + port);
     connection.connect();
 });
-5
 
-function getBookDetailList(req){
+
+/***   router         ***/
+function urlPreProcess(url)
+{
+    var urlAry = url.split('/');
+    console.log('urlPreProcess urlAry start');
+    array.forEach(element => {
+        console.log('urlPreProcess -- '+element);
+    });
+    console.log('urlPreProcess urlAry end');
+
+    if(urlAry.length > 1){
+        return urlAry[1];
+    }
+    else{
+        return null;
+    }
+}
+
+function urlRouter(url){
+    switch(urlPreProcess(url)){
+        case '/api/BookList':
+        {
+            setRespenseHeader(res,'text');
+            getBookList(res);
+
+        }break;
+        case '/api/BookDetailList':
+        {
+            setRespenseHeader(res,'text');
+            getBookDetailList(res);
+
+        }break;
+        case '/demo.html':
+        {
+            var fs = require('fs');
+            var fPath = __dirname + '/demo.html';
+            fs.readFile(fPath,'utf-8',function(err,data){
+                if(err){
+
+                    setRespenseHeader(res,'text');
+                    res.end(err.message+' path:'+fPath);
+                }
+                else{
+                    setRespenseHeader(res,'html');
+                    res.end(data);
+                }
+            }); 
+            
+            //res.write();
+            //res.end('<html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><div style="border:10px solid black;width: 100%;display: flex">我是个html～～ Hi～老司机！！！</div></body></html>');
+        }break;
+        default:{
+            result = result + '_default';
+            setRespenseHeader(res,null);
+            res.end(result);
+        }break;
+    }
+}
+
+
+/***   business         ***/
+
+function getBookDetailList(res){
     
     connection.query('SELECT * from douban_book_info', function (error, results, fields) {
         var r = '无信息';
@@ -94,11 +162,11 @@ function getBookDetailList(req){
            r =  JSON.stringify(results);
         }
       
-        req.end(r);
+        res.end(r);
     });   
 }
 
-function getBookList(req){
+function getBookList(res){
     
     connection.query('SELECT * from book_info', function (error, results, fields) {
         var r = '无信息';
@@ -122,7 +190,7 @@ function getBookList(req){
            r =  JSON.stringify(results);
         }
       
-        req.end(r);
+        res.end(r);
     });   
 }
 
