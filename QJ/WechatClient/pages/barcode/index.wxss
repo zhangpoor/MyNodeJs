@@ -1,0 +1,28 @@
+@import "/lib/weui.wxss";
+
+page {
+  background-color: #f8f8f8;
+  height: 100%;
+  font-size: 32rpx;
+  line-height: 1.6;
+}
+
+.page-body {
+  padding: 20rpx 0;
+}
+
+.page-section {
+  margin-bottom: 20rpx;
+}
+
+.bar-code-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bar-code {
+  width: 60rpx;
+  height: 60rpx;
+  flex-shrink: 0;
+  margin-right: 10rpx;
+}

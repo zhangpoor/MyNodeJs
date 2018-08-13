@@ -1,0 +1,98 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container" style="border:10px solid black;width: 100%;display: flex">
+        <div class="box1" style="border:1px solid brown;margin: 5px;width: 100%">
+            <div class="btn" onclick="getBookList()" style="border:1px solid red;margin: 8px">获取BookList</div>
+            <div class="text001" style="border:1px solid green;margin: 8px">无数据</div>
+        </div>
+        <!-- <div class="box2" style="border:1px solid blue;margin: 5px;width: 50%">
+            <div class="btn" onclick="getBookDetailList()" style="border:1px solid red;margin: 8px">获取BookDetailList</div>
+            <div class="text002" style="border:1px solid green;margin: 8px">无数据</div>
+        </div> -->
+    </div>
+</body>
+
+<script>
+    //var baseUrl = 'http://test.devfan.club';//product
+    var baseUrl = 'http://127.0.0.1:13014';//dev
+    /*
+        页面全局变量，页面不改变或者关闭，一直存在。
+        window.dataList = dataList;
+        sessionStorage.setItem('a', 123)；
+        var dataList = sessionStorage.getItem('a')；
+    */
+    var _bookList = null;
+
+    function getBookList(){
+        var _url = baseUrl + '/api/getBookList';
+        $.ajax({
+            url: _url,
+            success: function(data){
+
+                _bookList = JSON.parse(data);
+
+                var r = '';
+                var itText = '';
+                
+                 //alert(data);
+                 var itCount = 0;
+                 _bookList.forEach(element => {
+                    itText = element.name;
+                    //'Book_id:' + element.book_id + ',title:'+element.title;
+                    //r += '<div class="item_'+ element.book_id + '>';
+                    r += '<div style="border:1px solid red;margin: 5px;width: 50%">'
+                    r += element.book_id +'</div>';
+                    r += '<div style="border:1px solid orange;margin: 5px;width: 50%">'
+                    r += itText +'</div>';
+                    //r += '</div>';
+
+                });
+                
+                $(".text001").html(r); 
+            }
+        });
+        
+    }
+
+    function getBookDetailList(){
+        var _url = baseUrl + '/api/getBookDetailList';
+        $.ajax({
+            url: _url,
+            success: function(data){
+
+                var dataList = JSON.parse(data);
+                var r = '';
+                var itText = '';
+                 //alert(data);
+                 var itCount = 0;
+                 dataList.forEach(element => {
+                    itText = element.title;
+                    
+                    //'Book_id:' + element.book_id + ',title:'+element.title; item_001
+                    r = r + '<div class="item_'+ element.book_id + '" onclick="getDetailClick(this)" style="border:1px solid orange;margin: 5px">'+ itText +'</div>'
+
+                });
+                
+                $(".text002").html(r); 
+            }
+        });
+    }
+
+    function getDetailClick(item){
+
+        var bid = item.className;
+        
+
+        alert(item.className);
+    }
+
+</script>
+
+</html>

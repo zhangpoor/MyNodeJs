@@ -1,0 +1,19 @@
+<!--pages/record/inputRecord.wxml-->
+<view class="page-body">
+  <view class="page-section">
+    <view class="weui-cells__title">图书ISBN码(扫描)</view>
+    <view class="weui-cells weui-cells_after-title bar-code-card">
+      <view class="weui-cell weui-cell_input">
+        <input class="weui-input" disabled='true' placeholder="请扫描图书ISBN码" value='{{code}}'/>
+      </view>
+      <image class='bar-code' src='/images/bar_code.png' bindtap='scanBarCodeAction'></image>
+    </view>
+    <view class="weui-cells__title">书籍id(不含YZT前缀)</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <input type='number' class="weui-input weui-input_large" placeholder="请输入书籍id" bindinput="bindKeyInputBookId" value='{{formatBookId}}'/>
+      </view>
+    </view>
+  </view>
+  <button class='submit-btn-default' bindtap='onSubmitBook'>录入</button>
+</view>

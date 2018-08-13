@@ -1,0 +1,142 @@
+/* pages/bookList/bookList.wxss */
+
+.bgImageView {
+  height: 100%;
+  width: 100%;
+  /* display: flex; */
+  position: fixed;
+  /* background-color: yellow;   */
+}
+
+/*总菜单容器*/
+
+.menu {
+  /* display: block;*/
+  display: flex;
+  height: 38px;
+  justify-content: space-between;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-top: 15rpx;
+}
+
+/*一级菜单*/
+
+.menu button {
+  font-size: 15pt;
+  float: left;
+  /*hack*/
+  height: 38rpx;
+  width: 350rpx;
+  /* margin: 20rpx;   *//* margin-bottom: 5rpx; */
+  border-right: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+  text-align: center;
+  background-color: #f4f4f4;
+  color: #5a5a5a;
+  /* line-height: 38px; */
+}
+
+.leftButton {
+  /* margin-left: 20rpx; */
+  background-color: red;
+}
+
+.rightButton {
+  /* margin-right: 20rpx; */
+}
+
+/*二级菜单外部容器样式*/
+
+.menu view {
+  position: absolute;
+  width: 100%;
+  /*hack*/
+  top: 54px;
+  left: 0;
+  z-index: 999;
+}
+
+/*二级菜单普通样式*/
+
+.menu li {
+  text-align: center;
+  font-size: 14px;
+  line-height: 44px;
+  color: #575757;
+   height: 44px; 
+  display: block;
+  padding-left: 8px;
+  background-color: #fff;
+  border-bottom: 1px solid #dbdbdb;
+  /* background-color: red; */
+}
+
+.menu button {
+  font-size: 14px;
+  line-height: 34px;
+  color: #575757;
+  height: 34px;
+  display: block;
+  padding-left: 8px;
+  background-color: #fff;
+}
+
+.show {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  border-radius: 5px;
+  padding-top: 15rpx;
+  padding-bottom: 15rpx;
+  border-color: orange;
+  border-style: solid;
+  border-width: 2rpx;
+}
+
+.leftContainer {
+  width: 560rpx;
+  margin-left: 20rpx;
+}
+
+.bookName {
+  /* background-color: red;  */
+  font-size: 12pt;
+}
+
+.borrow_button_enable {
+  margin-right: 20rpx;
+  margin-left: 20rpx;
+  width: 150rpx;
+}
+
+.borrow_button_disable {
+  margin-right: 20rpx;
+  margin-left: 20rpx;
+  width: 150rpx;
+}
+
+/* 搜索 */
+.searchbar-result{
+    margin-top: 0;
+    font-size: 14px;
+}
+.searchbar-result:before{
+    display: none;
+}
+.weui-cell{
+    padding: 12px 15px 12px 35px;
+}

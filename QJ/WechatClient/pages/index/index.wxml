@@ -1,0 +1,62 @@
+<wxs module="m1">
+  var sortStateArray = ["3", "2", "1"];
+  var getStateColor = function(state) {
+    if (state == '3') {
+      return 'red';
+    } else if (state == '2') {
+      return 'blue';
+    } else if (state == '1') {
+      return 'green';
+    } else {
+      return 'black';
+    }
+  };
+  var getStateDes = function(state) {
+    if (state == '3') {
+      return '借阅申请已提交，等待管理员确认';
+    } else if (state == '2') {
+      return '归还申请已提交，等待管理员确认';
+    } else if (state == '1') {
+      return '已借阅';
+    } else {
+      return '';
+    }
+  }
+  module.exports.getStateColor = getStateColor;
+  module.exports.getStateDes = getStateDes;
+  module.exports.sortStateArray = sortStateArray;
+</wxs>
+<view class="bgView">
+  <view class="constainer">
+    <image class="bgImageView" src="../../data/home_bg.jpg" mode="scaleToFill"> </image>
+    <scroll-view scroll-y="true" bindscrolltolower="lower">
+
+      <view wx:if="{{isYztAccount}}" style="font-size:22pt;margin-left:20rpx">Hi , {{userInfo.user_id}}</view>
+      <view wx:else="{{isYztAccount}}" style="font-size:22pt;margin-left:20rpx">Hi , 游客</view>
+
+      <view wx:if="{{isYztAccount}}" class="section">
+        <view style="font-size:14pt">您名下有{{borrowingBooks.length}}本图书</view>
+      </view>
+
+      <button wx:if="{{!isYztAccount}}" class="registerButton" bindtap='registerAction' disabled="{{isRegisterButtonDisable}}">登录</button>
+
+      <block wx:for="{{borrowingBooks}}" wx:key="unique">
+        <view class="cell" style="border-color: {{m1.getStateColor(item.state)}}">
+          <view class="leftContainerView">
+            <view class="bookNameLabel" style="width:{{item.state == '1'?500+'rpx':660+'rpx'}}">《{{item.name}}》</view>
+            <view class="timeLabel">{{item.c_des}}</view>
+          </view>
+          <button wx:if="{{item.state == '1'}}" type="primary" bindtap='confirmReturnBook' id="{{index}}" class="returenButton">归还</button>
+
+        </view>
+      </block>
+      <button class="bookStoreButton" type="primary" bindtap='jumpToRulePage'>借阅须知</button>
+      <button class="bookStoreButton" type="primary" bindtap='jumpToBookStore'>去书库</button>
+      <button class="bookStoreButton" type="primary" bindtap='aboutAction'>关于我们</button>
+    </scroll-view>
+  </view>
+  <button wx:if="{{isManager}}" class="registerButton" bindtap='managerAction'>管理员入口</button>
+  <button wx:if="{{isManager}}" class="registerButton" bindtap='scanBarCodeAction'>扫描录入图书</button>
+  <button wx:if="{{isDeveloper}}" class="registerButton" bindtap='testAction'>测试入口</button>
+
+</view>

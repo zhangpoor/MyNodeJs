@@ -1,0 +1,21 @@
+<!--pages/record/inputRecord.wxml-->
+<view class="page-body">
+  <view class="page-section">
+    <view class="weui-cells__title">UM账号</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <input class="weui-input weui-input_large" auto-focus placeholder="请输入UM账号" bindinput="bindKeyInputUserId" />
+      </view>
+    </view>
+    <view class="weui-cells__title">书籍id(不含YZT前缀)</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <input type='number' class="weui-input weui-input_large" auto-focus placeholder="请输入书籍id" bindinput="bindKeyInputBookId" />
+      </view>
+    </view>
+  </view>
+  <button class='submit-btn-default' bindtap='inputRecord'> 录入 </button>
+
+    <button class='submit-btn-default' bindtap='deleteUser'> 注销当前用户 </button>
+
+</view>

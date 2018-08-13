@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/detail/detail",
+    "pages/bookList/bookList",
+    "pages/register/register",
+    "pages/record/inputRecord",
+    "pages/test/test",
+    "pages/rule/rule",
+    "pages/barcode/index",
+    "pages/web/web"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#d9c9B1",
+    "navigationBarTitleText": "壹账通图书角",
+    "navigationBarTextStyle": "white"
+  }
+}

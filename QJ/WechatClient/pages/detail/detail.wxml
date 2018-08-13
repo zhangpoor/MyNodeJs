@@ -1,0 +1,33 @@
+<!--pages/detail/detail.wxml-->
+<view>
+  <view class="cover-container">
+    <image bindtap="imgPreview" src='{{book.img}}' mode='aspectFit'></image>
+  </view>
+
+  <view class="book-meta">
+    <view class="meta-info">
+      <text class="book-title">{{book.name}}</text>
+      <text class="other-meta">作者：{{book.author}}</text>
+      <text class="other-meta">出版社：{{book.publisher}}</text>
+      <text class="other-meta">出版日期：{{book.pubdate}}</text>
+    </view>
+    <!-- <view class="range">
+      <text class="score">{{detail.average}}</text>
+      <text class="viewers">0</text>
+    </view> -->
+  </view>
+
+  <view class="book-intro">
+    <view class="intro-header">简介</view>
+    <view class="intro-content">
+      <text>{{book.summary}}</text>
+    </view>
+  </view>
+
+  <view class="book-intro">
+    <view class="intro-header">目录简介</view>
+    <view class="intro-content">
+      <text>{{book.catalog}}</text>
+    </view>
+  </view>
+</view>
