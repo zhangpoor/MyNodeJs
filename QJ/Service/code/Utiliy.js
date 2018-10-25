@@ -1,6 +1,7 @@
 var Utiliy = {
     /* service  */
-    hostName : '127.0.0.1',
+    hostName: '172.19.19.96',
+    //hostName : '127.0.0.1',
     port : 13014,
 
     /* DB */

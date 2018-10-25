@@ -13,7 +13,25 @@ var DBManager = {
     connectDB(){
         connection.connect();
     },
-    mySelect(tableName,compelation){
+    mySelectWithSql(sql,compelation){
+        connection.query(sql, function (error, results, fields) {
+            var r = '无信息';
+            var isOk = true;
+            if(error){
+                console.log('DBManager: ' + error);
+                r = error.message;
+                isOk = false;
+            }
+            else{
+               r =  JSON.stringify(results);
+            }
+          
+            if(compelation){
+                compelation(isOk, r);
+            }
+        });  
+    },
+    mySelectWithTableName(tableName,compelation){
         connection.query('SELECT * from ' + tableName, function (error, results, fields) {
             var r = '无信息';
             var isOk = true;

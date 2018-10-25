@@ -5,30 +5,58 @@
     <title>Title</title>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
-
+<style>  
+    .main{
+        border: 12px solid green;
+        margin: 1%;
+    }
+    .typeBox {  
+        width: 100%;   
+        height: 100%;   
+        background: rgba(9, 50, 70, 0.7);   
+        position: absolute;   
+        top: 10px;  
+        /* display: flex; */
+    }  
+    .typeItem{
+        margin: 15px 40% 15px 40%;  /* up right boottom left */
+        width: 20%;
+        height: 60px;
+        line-height: 60px;
+        background:yellow;
+        text-align: center;
+        
+    }
+</style>
 <body>
-    <div class="container" style="border:10px solid black;width: 100%;display: flex">
-        <div class="box1" style="border:1px solid brown;margin: 5px;width: 100%">
-            <div class="btn" onclick="getBookList()" style="border:1px solid red;margin: 8px">获取BookList</div>
-            <div class="text001" style="border:1px solid green;margin: 8px">无数据</div>
+    <div class="main">
+        <div class="box2" style="border:2px solid blue;margin: 3px;display: flex">
+            <!-- <div class="btn" onclick="getOldBookList()" 
+                style="border:1px solid red;margin: 5px">获取old BookList</div> -->
+            <div class="btn" onclick="getBookList()" 
+                style="border:1px solid red;margin: 5px">获取新 BookList</div>
+                    <!-- <div class="btn" onclick="getBookDetailList()" style="border:1px solid red;margin: 8px">获取old BookDetailList</div> -->
         </div>
-        <!-- <div class="box2" style="border:1px solid blue;margin: 5px;width: 50%">
-            <div class="btn" onclick="getBookDetailList()" style="border:1px solid red;margin: 8px">获取BookDetailList</div>
-            <div class="text002" style="border:1px solid green;margin: 8px">无数据</div>
-        </div> -->
+        <div class="box1" style="border:6px solid brown;margin: .5%">
+            <div class="text001" style="border:1px solid green;margin: 8px">无内容</div>
+        </div>
+        
     </div>
 </body>
 
 <script>
     //var baseUrl = 'http://test.devfan.club';//product
-    var baseUrl = 'http://127.0.0.1:13014';//dev
+    //var baseUrl = 'http://127.0.0.1:13014';//dev
+    var baseUrl = 'http://172.19.19.96:13014';
     /*
         页面全局变量，页面不改变或者关闭，一直存在。
         window.dataList = dataList;
         sessionStorage.setItem('a', 123)；
         var dataList = sessionStorage.getItem('a')；
     */
-    var _bookList = null;
+    var _bookList = null;       //当前获取到的书列表
+    var _book_item = null;      //当前选中的书
+    
 
     function getBookList(){
         var _url = baseUrl + '/api/getBookList';
@@ -43,24 +71,102 @@
                 
                  //alert(data);
                  var itCount = 0;
+                 r += '<div style="border:1px solid black;margin: 3px;width: 99%;display: flex">';
+                    
+                    r += '<div style="margin: 5px;width: 6%">'
+                    r += 'Book ID' +'</div>';
+                    r += '<div style="margin: 5px;width: 67%">'
+                    r += 'Book Name' +'</div>';
+                    r += '<div style="margin: 5px;width: 15%">'
+                    r += 'ISBN' +'</div>';
+                    r += '<div style="margin: 5px;width: 8%">'
+                    r += 'Type' +'</div>';
+                    r += '<div style="margin: 5px;width: 4%">'
+                    r += 'State' +'</div>';
+
+                r += '</div>';
+
                  _bookList.forEach(element => {
-                    itText = element.name;
+                    itText = element.title;
+
                     //'Book_id:' + element.book_id + ',title:'+element.title;
-                    //r += '<div class="item_'+ element.book_id + '>';
-                    r += '<div style="border:1px solid red;margin: 5px;width: 50%">'
-                    r += element.book_id +'</div>';
-                    r += '<div style="border:1px solid orange;margin: 5px;width: 50%">'
+                    r += '<div class="item_'+ element.id + 
+                    '" style="border:1px solid black;margin: 3px;width: 99%;display: flex">';
+                    
+                    r += '<div style="border:1px solid blue;margin: 5px;width: 6%">'
+                    r += element.id +'</div>';
+                    r += '<div style="border:1px solid orange;margin: 5px;width: 67%">'
                     r += itText +'</div>';
-                    //r += '</div>';
+                    r += '<div style="border:1px solid orange;margin: 5px;width: 15%">'
+                    r += element.isbn +'</div>';
+                    r += '<div style="border:1px solid orange;margin: 5px;width: 8%" onclick="itemTypeClick('+ element.id +')">'
+                    r += element.tp +'</div>';
+                    r += '<div style="border:1px solid orange;margin: 5px;width: 4%">'
+                    r += element.state +'</div>';
+
+                    r += '</div>';
 
                 });
                 
-                $(".text001").html(r); 
+                $(".box1").html(r); 
             }
         });
         
     }
 
+    function itemTypeClick(bookid){
+        var _url = baseUrl + '/api/getTypeList';
+        $.ajax({
+            url: _url,
+            success: function(data){
+
+                var _box = document.createElement('div');      
+                _box.className = 'typeBox';      
+                document.body.appendChild(_box); 
+
+                _box.addEventListener('click',function(){
+                    _box.removeEventListener('click');
+                    document.body.removeChild(_box);
+                });
+
+                var _typeList = JSON.parse(data);
+                _typeList.forEach(element => {
+                    var _it = document.createElement('div');
+                    _it.className = 'typeItem'; 
+                    _it.textContent = element.name;
+                    _box.appendChild(_it);
+
+                    _it.addEventListener('click',function(){
+                        
+
+                        _box.removeEventListener('click');
+                        document.body.removeChild(_box);
+                    });
+                });
+
+            }
+        });
+    
+        /*
+        //alert(_bookList);
+        
+        _bookList.forEach(element => {
+            //alert(element.id + ','+bookid+','+ (element.id == bookid));
+            if(element.id == bookid)
+            {
+                //alert(element.id + ','+bookid+','+ (element.id == bookid));
+                _book_item = element;
+            }
+            
+        });
+
+        if(_book_item != null){
+
+            //alert(_book_item.title);
+        }   
+        */ 
+    }
+/*
     function getBookDetailList(){
         var _url = baseUrl + '/api/getBookDetailList';
         $.ajax({
@@ -71,8 +177,8 @@
                 var r = '';
                 var itText = '';
                  //alert(data);
-                 var itCount = 0;
-                 dataList.forEach(element => {
+                var itCount = 0;
+                dataList.forEach(element => {
                     itText = element.title;
                     
                     //'Book_id:' + element.book_id + ',title:'+element.title; item_001
@@ -93,6 +199,39 @@
         alert(item.className);
     }
 
+    function getOldBookList(){
+        var _url = baseUrl + '/api/getOldBookList';
+        $.ajax({
+            url: _url,
+            success: function(data){
+
+                _bookList = JSON.parse(data);
+
+                var r = '';
+                var itText = '';
+                
+                 //alert(data);
+                 var itCount = 0;
+                 _bookList.forEach(element => {
+                    itText = element.name;
+
+                    //'Book_id:' + element.book_id + ',title:'+element.title;
+                    r += '<div class="item_'+ element.book_id + '" style="border:1px solid black;margin: 1px;width: 100%;display: flex">';
+                    r += '<div style="border:1px solid blue;margin: 5px;width: 30%">'
+                    r += element.book_id +'</div>';
+                    r += '<div style="border:1px solid orange;margin: 5px;width: 70%">'
+                    r += itText +'</div>';
+                    r += '</div>';
+
+                });
+                
+                $(".box1").html(r); 
+            }
+        });
+        
+    }
+
+*/
 </script>
 
 </html>

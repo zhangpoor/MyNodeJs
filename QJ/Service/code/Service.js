@@ -6,23 +6,42 @@ var util = require('./Utiliy.js');
 
 /*** Service ***/
 var UrlRounterManager = require('./Business.js');
-var server = http.createServer(function(req, res) {
+var server = http.createServer(function(resq, resp) {
     
-    var currentUrl = req.url;
-    console.log('Get Request,url:   '+ currentUrl);
+    var currentUrl = resq.url;
     console.log('\r\n');
-    var result = '出错啦～谢谢惠顾～url:   '+currentUrl;
+    console.log('Get Request,url:   '+ currentUrl);
+    console.log('Method:   '+ resq.method);
+    
 
-        
-    UrlRounterManager.urlRounter(currentUrl,'hello',function(info,tp){
-        setRespenseHeader(res,tp);
+    if(resq.method == 'POST'){
+        let rs = '';
+        resq.on('data', (data) => {
+            console.log('开始接收数据');
+            rs += data;
+        });
+        resq.on('end', () => {
+            var params = JSON.parse(rs);
+            console.log('数据接收完毕：' + params);
+            processResponse(resp,params,currentUrl);
+        });
+    }else{
 
+        processResponse(resp,'hello',currentUrl);
+    }   
+});
+
+function processResponse(resp,clientInfo,url){
+    UrlRounterManager.urlRounter(url,clientInfo,function(info,tp){
+        setRespenseHeader(resp,tp);
+        var result = '出错啦～谢谢惠顾～url:   '+url;
         var r = info ? info : result;
-        res.end(r);
+        resp.end(r);
         console.log('\r\n');
         console.log('Send Result:' + r.length + '\r\nType:'+tp);
     });
-});
+}
+
 
 
 var DBManager = require('./DB.js');
@@ -34,23 +53,23 @@ server.listen(util.port, util.hostName, function() {
 
 /*** Tools ***/
 /** setResponseHeader **/
-function setRespenseHeader(res,RsTp){
+function setRespenseHeader(resp,RsTp){
     switch(RsTp){
         case util.ResponseTpye.html:{
             console.log('setRespenseHeader: tp_html');
-            res.writeHead(200,{'Content-Type':'text/html'});
+            resp.writeHead(200,{'Content-Type':'text/html'});
         }break;
         case util.ResponseTpye.text:{
             console.log('setRespenseHeader: tp_text');
-            res.setHeader('Content-Type', 'text/plain');
-            res.setHeader('Access-Control-Allow-Origin',"*")
-            res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+            resp.setHeader('Content-Type', 'text/plain');
+            resp.setHeader('Access-Control-Allow-Origin',"*")
+            resp.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
         }break;
         default:{
             console.log('setRespenseHeader: tp_unkonw');
-            res.setHeader('Content-Type', 'text/plain');
-            res.setHeader('Access-Control-Allow-Origin',"*")
-            res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+            resp.setHeader('Content-Type', 'text/plain');
+            resp.setHeader('Access-Control-Allow-Origin',"*")
+            resp.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
         }break;
     }
 }
